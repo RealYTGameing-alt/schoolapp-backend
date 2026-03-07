@@ -8,11 +8,10 @@ require('dotenv').config();
 const initializeDatabase = require('./src/config/initDB');
 
 // Import routes
-const assignmentRoutes = require('./src/routes/assignmentRoutes');
-const submissionRoutes = require('./src/routes/submissionRoutes');
 const authRoutes = require('./src/routes/authRoutes');
 const attendanceRoutes = require('./src/routes/attendanceRoutes');
 const assignmentRoutes = require('./src/routes/assignmentRoutes');
+const submissionRoutes = require('./src/routes/submissionRoutes');
 
 const app = express();
 
