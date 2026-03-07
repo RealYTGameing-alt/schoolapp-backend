@@ -355,3 +355,18 @@ INSERT INTO roles (name, permissions) VALUES
   ('student', '{"view_own": true, "submit_assignments": true}'),
   ('parent', '{"view_child": true, "message_teacher": true}')
 ON CONFLICT (name) DO NOTHING;
+CREATE TABLE IF NOT EXISTS assignment_submissions (
+  id SERIAL PRIMARY KEY,
+  assignment_id INTEGER REFERENCES assignments(id) ON DELETE CASCADE,
+  student_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
+  file_path VARCHAR(500),
+  original_filename VARCHAR(255),
+  text_content TEXT,
+  submitted_at TIMESTAMP DEFAULT NOW(),
+  is_late BOOLEAN DEFAULT FALSE,
+  status VARCHAR(50) DEFAULT 'submitted',
+  grade DECIMAL(5,2),
+  feedback TEXT,
+  graded_at TIMESTAMP,
+  UNIQUE(assignment_id, student_id)
+);

@@ -8,6 +8,8 @@ require('dotenv').config();
 const initializeDatabase = require('./src/config/initDB');
 
 // Import routes
+const assignmentRoutes = require('./src/routes/assignmentRoutes');
+const submissionRoutes = require('./src/routes/submissionRoutes');
 const authRoutes = require('./src/routes/authRoutes');
 const attendanceRoutes = require('./src/routes/attendanceRoutes');
 const assignmentRoutes = require('./src/routes/assignmentRoutes');
@@ -35,6 +37,7 @@ app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 app.use('/api/auth', authRoutes);
 app.use('/api/attendance', attendanceRoutes);
 app.use('/api/assignments', assignmentRoutes);
+app.use('/api/submissions', submissionRoutes);
 
 // Health check
 app.get('/api/health', (req, res) => {
