@@ -1,37 +1,28 @@
+const cloudinary = require('cloudinary').v2;
+const { CloudinaryStorage } = require('multer-storage-cloudinary');
 const multer = require('multer');
-const path = require('path');
-const { v4: uuidv4 } = require('uuid');
 
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, 'uploads/');
-  },
-  filename: (req, file, cb) => {
-    const uniqueName = uuidv4() + path.extname(file.originalname);
-    cb(null, uniqueName);
-  }
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
-const fileFilter = (req, file, cb) => {
-  const allowedTypes = [
-    'application/pdf',
-    'application/msword',
-    'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
-    'image/jpeg',
-    'image/png',
-    'text/plain'
-  ];
-  if (allowedTypes.includes(file.mimetype)) {
-    cb(null, true);
-  } else {
-    cb(new Error('Invalid file type. Only PDF, Word, images and text files allowed.'), false);
-  }
-};
+const storage = new CloudinaryStorage({
+  cloudinary,
+  params: async (req, file) => {
+    return {
+      folder: 'schoolapp',
+      allowed_formats: ['pdf', 'doc', 'docx', 'jpg', 'jpeg', 'png', 'txt'],
+      resource_type: 'auto',
+      public_id: `${Date.now()}-${file.originalname.replace(/\s/g, '_')}`,
+    };
+  },
+});
 
 const upload = multer({
   storage,
-  fileFilter,
-  limits: { fileSize: 10 * 1024 * 1024 } // 10MB max
+  limits: { fileSize: 10 * 1024 * 1024 },
 });
 
 module.exports = upload;

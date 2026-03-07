@@ -38,7 +38,7 @@ const submitAssignment = async (req, res) => {
       return res.status(400).json({ error: 'You have already submitted this assignment' });
     }
 
-    const filePath = file ? file.filename : null;
+    const filePath = file ? file.path : null;
     const originalName = file ? file.originalname : null;
 
     const result = await pool.query(
@@ -88,29 +88,21 @@ const getSubmissions = async (req, res) => {
 const downloadFile = async (req, res) => {
   try {
     const { submissionId } = req.params;
-
     const result = await pool.query(
       'SELECT * FROM assignment_submissions WHERE id = $1',
       [submissionId]
     );
-
     if (result.rows.length === 0) {
       return res.status(404).json({ error: 'Submission not found' });
     }
-
-    const submission = result.rows[0];
-    const filePath = path.join(__dirname, '../../uploads', submission.file_path);
-
-    if (!fs.existsSync(filePath)) {
-      return res.status(404).json({ error: 'File not found' });
-    }
-
-    res.download(filePath, submission.original_filename);
+    // Return the Cloudinary URL for direct download
+    res.json({ url: result.rows[0].file_path, filename: result.rows[0].original_filename });
   } catch (err) {
     console.error('Download file error:', err);
     res.status(500).json({ error: 'Server error' });
   }
 };
+
 
 // Teacher grades a submission
 const gradeSubmission = async (req, res) => {

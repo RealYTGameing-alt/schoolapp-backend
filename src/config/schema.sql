@@ -82,15 +82,14 @@ CREATE TABLE IF NOT EXISTS parents (
 -- ATTENDANCE
 CREATE TABLE IF NOT EXISTS attendance (
   id SERIAL PRIMARY KEY,
-  student_id UUID REFERENCES students(id),
-  class_id INTEGER REFERENCES classes(id),
-  subject_id INTEGER REFERENCES subjects(id),
-  date DATE NOT NULL,
-  status VARCHAR(10) CHECK (status IN ('present', 'absent', 'late', 'excused')),
-  marked_by UUID REFERENCES users(id),
-  remarks TEXT,
+  student_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
+  teacher_id INTEGER REFERENCES users(id),
+  date DATE NOT NULL DEFAULT CURRENT_DATE,
+  status VARCHAR(20) DEFAULT 'present',
+  class_id INTEGER,
+  subject VARCHAR(100) DEFAULT 'General',
   created_at TIMESTAMP DEFAULT NOW(),
-  UNIQUE(student_id, subject_id, date)
+  UNIQUE(student_id, date, subject)
 );
 
 -- TIMETABLE
