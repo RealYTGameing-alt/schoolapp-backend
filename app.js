@@ -17,8 +17,14 @@ const app = express();
 // Middleware
 app.use(helmet());
 app.use(cors({
-  origin: [process.env.FRONTEND_URL, process.env.PRODUCTION_URL, 'http://localhost:3000'],
-  credentials: true
+  origin: [
+    'http://localhost:3000',
+    'https://schoolapp-frontend-mu.vercel.app',
+    process.env.FRONTEND_URL,
+  ].filter(Boolean),
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
 }));
 app.use(morgan('dev'));
 app.use(express.json());
