@@ -221,14 +221,15 @@ CREATE TABLE IF NOT EXISTS notifications (
 CREATE TABLE IF NOT EXISTS lesson_plans (
   id SERIAL PRIMARY KEY,
   teacher_id INTEGER REFERENCES users(id),
-  subject_id INTEGER REFERENCES subjects(id),
-  class_id INTEGER REFERENCES classes(id),
+  subject VARCHAR(100),
+  class_name VARCHAR(50),
   title VARCHAR(255) NOT NULL,
   objectives TEXT,
   content TEXT,
   resources TEXT,
   date DATE,
-  duration_minutes INTEGER,
+  duration_minutes INTEGER DEFAULT 45,
+  status VARCHAR(20) DEFAULT 'draft',
   created_at TIMESTAMP DEFAULT NOW()
 );
 
