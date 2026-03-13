@@ -355,7 +355,7 @@ CREATE TABLE IF NOT EXISTS announcements (
   content TEXT NOT NULL,
   target VARCHAR(50) DEFAULT 'all',
   priority VARCHAR(20) DEFAULT 'medium',
-  created_by INTEGER REFERENCES users(id),
+  created_by VARCHAR(255),
   created_at TIMESTAMP DEFAULT NOW()
 );
 
