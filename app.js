@@ -1,3 +1,4 @@
+const notificationRoutes = require('./src/routes/notificationRoutes');
 const lessonPlanRoutes = require('./src/routes/lessonPlanRoutes');
 const timetableRoutes = require('./src/routes/timetableRoutes');
 const express = require('express');
@@ -47,6 +48,7 @@ app.use('/api/plagiarism', plagiarismRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/timetable', timetableRoutes);
 app.use('/api/lesson-plans', lessonPlanRoutes);
+app.use('/api/notifications', notificationRoutes);
 
 // Health check
 app.get('/api/health', (req, res) => {

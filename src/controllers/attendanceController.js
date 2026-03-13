@@ -1,4 +1,5 @@
 const pool = require('../config/database');
+const { createNotification } = require('./notificationController');
 
 const markAttendance = async (req, res) => {
   try {
@@ -17,9 +18,30 @@ const markAttendance = async (req, res) => {
          ON CONFLICT (student_id, date, subject)
          DO UPDATE SET status = $4
          RETURNING *`,
-        [record.studentId, teacherId, date || new Date().toISOString().split('T')[0], record.status, classId || null, subject || 'General']
+        [record.studentId, teacherId,
+         date || new Date().toISOString().split('T')[0],
+         record.status, classId || null, subject || 'General']
       );
       results.push(result.rows[0]);
+
+      // Notify absent or late students
+      if (record.status === 'absent') {
+        await createNotification(
+          record.studentId,
+          '❌ Absent Today',
+          `You were marked absent for ${subject || 'class'} on ${date || 'today'}. Please inform your teacher if this is incorrect.`,
+          'attendance',
+          '/student'
+        );
+      } else if (record.status === 'late') {
+        await createNotification(
+          record.studentId,
+          '⏰ Marked Late',
+          `You were marked late for ${subject || 'class'} on ${date || 'today'}.`,
+          'attendance',
+          '/student'
+        );
+      }
     }
 
     res.json({ message: 'Attendance saved successfully!', records: results });
@@ -59,12 +81,10 @@ const getAttendance = async (req, res) => {
 const getStudentAttendance = async (req, res) => {
   try {
     const studentId = req.user.id;
-
     const result = await pool.query(
       `SELECT * FROM attendance WHERE student_id = $1 ORDER BY date DESC LIMIT 30`,
       [studentId]
     );
-
     res.json({ attendance: result.rows });
   } catch (err) {
     console.error('Get student attendance error:', err);
