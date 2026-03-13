@@ -14,7 +14,6 @@ const assignmentRoutes = require('./src/routes/assignmentRoutes');
 const submissionRoutes = require('./src/routes/submissionRoutes');
 const dashboardRoutes = require('./src/routes/dashboardRoutes');
 const plagiarismRoutes = require('./src/routes/plagiarismRoutes');
-app.use('/api/plagiarism', plagiarismRoutes);
 
 const app = express();
 
@@ -41,6 +40,7 @@ app.use('/api/attendance', attendanceRoutes);
 app.use('/api/assignments', assignmentRoutes);
 app.use('/api/submissions', submissionRoutes);
 app.use('/api/dashboard', dashboardRoutes);
+app.use('/api/plagiarism', plagiarismRoutes);
 
 // Health check
 app.get('/api/health', (req, res) => {
