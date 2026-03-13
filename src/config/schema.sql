@@ -367,3 +367,17 @@ INSERT INTO roles (name, permissions) VALUES
   ('student', '{"view_own": true, "submit_assignments": true}'),
   ('parent', '{"view_child": true, "message_teacher": true}')
 ON CONFLICT (name) DO NOTHING;
+-- TIMETABLE ENTRIES
+CREATE TABLE IF NOT EXISTS timetable_entries (
+  id SERIAL PRIMARY KEY,
+  class_name VARCHAR(50) NOT NULL,
+  day VARCHAR(20) NOT NULL,
+  day_order INTEGER NOT NULL,
+  period INTEGER NOT NULL,
+  start_time VARCHAR(20) NOT NULL,
+  end_time VARCHAR(20) NOT NULL,
+  subject VARCHAR(100) NOT NULL,
+  teacher VARCHAR(100),
+  room VARCHAR(50),
+  created_at TIMESTAMP DEFAULT NOW()
+);

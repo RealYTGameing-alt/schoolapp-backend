@@ -1,3 +1,4 @@
+const timetableRoutes = require('./src/routes/timetableRoutes');
 const express = require('express');
 const cors = require('cors');
 const helmet = require('helmet');
@@ -43,6 +44,7 @@ app.use('/api/submissions', submissionRoutes);
 app.use('/api/dashboard', dashboardRoutes);
 app.use('/api/plagiarism', plagiarismRoutes);
 app.use('/api/users', userRoutes);
+app.use('/api/timetable', timetableRoutes);
 
 // Health check
 app.get('/api/health', (req, res) => {
