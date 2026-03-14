@@ -1,3 +1,4 @@
+const progressRoutes = require('./src/routes/progressRoutes');
 const notificationRoutes = require('./src/routes/notificationRoutes');
 const lessonPlanRoutes = require('./src/routes/lessonPlanRoutes');
 const timetableRoutes = require('./src/routes/timetableRoutes');
@@ -49,6 +50,7 @@ app.use('/api/users', userRoutes);
 app.use('/api/timetable', timetableRoutes);
 app.use('/api/lesson-plans', lessonPlanRoutes);
 app.use('/api/notifications', notificationRoutes);
+app.use('/api/progress', progressRoutes);
 
 // Health check
 app.get('/api/health', (req, res) => {
