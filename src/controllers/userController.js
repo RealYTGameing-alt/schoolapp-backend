@@ -87,5 +87,44 @@ const resetPassword = async (req, res) => {
     res.status(500).json({ error: 'Server error' });
   }
 };
+const updateProfile = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { firstName, lastName, phone } = req.body;
 
-module.exports = { createUser, getAllUsers, deleteUser, resetPassword };
+    const result = await pool.query(
+      `UPDATE users SET first_name = $1, last_name = $2, phone = $3 WHERE id = $4
+       RETURNING id, first_name, last_name, email, phone, role_id`,
+      [firstName, lastName, phone, id]
+    );
+
+    res.json({ message: 'Profile updated!', user: result.rows[0] });
+  } catch (err) {
+    console.error('Update profile error:', err);
+    res.status(500).json({ error: 'Server error' });
+  }
+};
+
+const changePassword = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { currentPassword, newPassword } = req.body;
+
+    const userResult = await pool.query('SELECT password FROM users WHERE id = $1', [id]);
+    if (userResult.rows.length === 0) return res.status(404).json({ error: 'User not found' });
+
+    const bcrypt = require('bcryptjs');
+    const valid = await bcrypt.compare(currentPassword, userResult.rows[0].password);
+    if (!valid) return res.status(400).json({ error: 'Current password is incorrect.' });
+
+    const hashed = await bcrypt.hash(newPassword, 10);
+    await pool.query('UPDATE users SET password = $1 WHERE id = $2', [hashed, id]);
+
+    res.json({ message: 'Password changed successfully!' });
+  } catch (err) {
+    console.error('Change password error:', err);
+    res.status(500).json({ error: 'Server error' });
+  }
+};  
+
+module.exports = { createUser, getAllUsers, deleteUser, resetPassword, updateProfile, changePassword };

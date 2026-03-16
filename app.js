@@ -7,6 +7,7 @@ const cors = require('cors');
 const helmet = require('helmet');
 const morgan = require('morgan');
 const path = require('path');
+const reportsRoutes = require('./src/routes/reportsRoutes');
 require('dotenv').config();
 
 const initializeDatabase = require('./src/config/initDB');
@@ -51,6 +52,7 @@ app.use('/api/timetable', timetableRoutes);
 app.use('/api/lesson-plans', lessonPlanRoutes);
 app.use('/api/notifications', notificationRoutes);
 app.use('/api/progress', progressRoutes);
+app.use('/api/reports', reportsRoutes);
 
 // Health check
 app.get('/api/health', (req, res) => {
