@@ -1,8 +1,7 @@
-const { createUser, getAllUsers, deleteUser, resetPassword, updateProfile, changePassword } = require('../controllers/userController');
 const express = require('express');
 const router = express.Router();
 const { authenticate, authorize } = require('../middleware/auth');
-const { createUser, getAllUsers, deleteUser, resetPassword } = require('../controllers/userController');
+const { createUser, getAllUsers, deleteUser, resetPassword, updateProfile, changePassword } = require('../controllers/userController');
 
 router.post('/create', authenticate, authorize('admin', 'principal'), createUser);
 router.get('/all', authenticate, authorize('admin', 'principal'), getAllUsers);
