@@ -9,6 +9,7 @@ const morgan = require('morgan');
 const path = require('path');
 const reportsRoutes = require('./src/routes/reportsRoutes');
 const examRoutes = require('./src/routes/examRoutes');
+const calendarRoutes = require('./src/routes/calendarRoutes');
 require('dotenv').config();
 
 const initializeDatabase = require('./src/config/initDB');
@@ -21,6 +22,7 @@ const submissionRoutes = require('./src/routes/submissionRoutes');
 const dashboardRoutes = require('./src/routes/dashboardRoutes');
 const plagiarismRoutes = require('./src/routes/plagiarismRoutes');
 const userRoutes = require('./src/routes/userRoutes');
+
 
 const app = express();
 
@@ -55,6 +57,7 @@ app.use('/api/notifications', notificationRoutes);
 app.use('/api/progress', progressRoutes);
 app.use('/api/reports', reportsRoutes);
 app.use('/api/exams', examRoutes);
+app.use('/api/calendar', calendarRoutes);
 
 // Health check
 app.get('/api/health', (req, res) => {
