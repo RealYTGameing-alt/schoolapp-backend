@@ -8,6 +8,7 @@ const helmet = require('helmet');
 const morgan = require('morgan');
 const path = require('path');
 const reportsRoutes = require('./src/routes/reportsRoutes');
+const examRoutes = require('./src/routes/examRoutes');
 require('dotenv').config();
 
 const initializeDatabase = require('./src/config/initDB');
@@ -53,6 +54,7 @@ app.use('/api/lesson-plans', lessonPlanRoutes);
 app.use('/api/notifications', notificationRoutes);
 app.use('/api/progress', progressRoutes);
 app.use('/api/reports', reportsRoutes);
+app.use('/api/exams', examRoutes);
 
 // Health check
 app.get('/api/health', (req, res) => {
