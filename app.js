@@ -10,6 +10,7 @@ const path = require('path');
 const reportsRoutes = require('./src/routes/reportsRoutes');
 const examRoutes = require('./src/routes/examRoutes');
 const calendarRoutes = require('./src/routes/calendarRoutes');
+const materialsRoutes = require('./src/routes/materialsRoutes');
 require('dotenv').config();
 
 const initializeDatabase = require('./src/config/initDB');
@@ -58,6 +59,7 @@ app.use('/api/progress', progressRoutes);
 app.use('/api/reports', reportsRoutes);
 app.use('/api/exams', examRoutes);
 app.use('/api/calendar', calendarRoutes);
+app.use('/api/materials', materialsRoutes);
 
 // Health check
 app.get('/api/health', (req, res) => {
