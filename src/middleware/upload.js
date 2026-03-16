@@ -11,18 +11,24 @@ cloudinary.config({
 const storage = new CloudinaryStorage({
   cloudinary,
   params: async (req, file) => {
+    let folder = 'edumanage/general';
+    let resourceType = 'auto';
+
+    if (req.uploadFolder === 'assignments') folder = 'edumanage/assignments';
+    if (req.uploadFolder === 'materials') folder = 'edumanage/materials';
+
     return {
-      folder: 'schoolapp',
-      allowed_formats: ['pdf', 'doc', 'docx', 'jpg', 'jpeg', 'png', 'txt'],
-      resource_type: 'auto',
-      public_id: `${Date.now()}-${file.originalname.replace(/\s/g, '_')}`,
+      folder,
+      resource_type: resourceType,
+      allowed_formats: ['jpg', 'jpeg', 'png', 'pdf', 'doc', 'docx', 'ppt', 'pptx', 'mp4', 'txt'],
+      public_id: `${Date.now()}-${file.originalname.replace(/[^a-zA-Z0-9.]/g, '_')}`,
     };
   },
 });
 
 const upload = multer({
   storage,
-  limits: { fileSize: 10 * 1024 * 1024 },
+  limits: { fileSize: 50 * 1024 * 1024 }, // 50MB max
 });
 
-module.exports = upload;
+module.exports = { upload, cloudinary };

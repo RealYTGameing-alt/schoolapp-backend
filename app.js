@@ -11,6 +11,7 @@ const reportsRoutes = require('./src/routes/reportsRoutes');
 const examRoutes = require('./src/routes/examRoutes');
 const calendarRoutes = require('./src/routes/calendarRoutes');
 const materialsRoutes = require('./src/routes/materialsRoutes');
+const uploadRoutes = require('./src/routes/uploadRoutes');
 require('dotenv').config();
 
 const initializeDatabase = require('./src/config/initDB');
@@ -60,6 +61,7 @@ app.use('/api/reports', reportsRoutes);
 app.use('/api/exams', examRoutes);
 app.use('/api/calendar', calendarRoutes);
 app.use('/api/materials', materialsRoutes);
+app.use('/api/upload', uploadRoutes);
 
 // Health check
 app.get('/api/health', (req, res) => {
